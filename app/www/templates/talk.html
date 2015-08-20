@@ -8,5 +8,6 @@
       </h4>
       <p ng-bind-html="talk.transcript"></p>
     </article>
+    <audio controls ng-src="{{getAudioUrl()}}"></audio>
   </ion-content>
 </ion-view>
