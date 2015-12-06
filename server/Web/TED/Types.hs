@@ -51,10 +51,12 @@ newtype TEDImage = TEDImage { fromTEDImage :: Image }
 instance FromJSON TEDImage where
     parseJSON (Array v) =
         let urls = V.map parseImage v
-        in  TEDImage <$> (Image <$> (urls V.! 1) <*> (urls V.! 2))
+        in  TEDImage <$> (Image <$> (urls V.! 1)
+                                <*> (urls V.! 2))
       where
+        stripScheme = T.replace "http://" "//"
         parseImage (Object o) =
-            o .: "image" >>= (.: "url")
+            liftM stripScheme (o .: "image" >>= (.: "url"))
         parseImage _ = mzero
     parseJSON _ = mzero
 
